@@ -1,10 +1,13 @@
 import express from "express"
-
+import  dotenv  from "dotenv"
 const app = express()
+
+dotenv.config()
+const PORT = process.env.PORT
 
 app.get("/",(req,res)=>{
     res.status(200).json({"message":"ok"})
 
 })
 
-app.listen(3000,console.log("server ruuning on port 3000"))
+app.listen(PORT,console.log(`server ruuning on port ${PORT}`))

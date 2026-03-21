@@ -3,22 +3,22 @@ import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import router from "./routes/getUsers.js";
 import {conn} from "./db/dbConn.js"
+import { Customers } from "./models/customers.js";
 const app = express();
 
 // cutsome middieware
-conn();
 
-if(conn() === true){
+if(conn()){
   console.log("connection established ")
+  Customers.sync()
+
 }
 else{
   console.log("an error occured while connecting to the databse",conn())
   process.exit(0)
 }
 
-if(conn ==  false){
-  pr
-}
+
 
 function time(req, res, next) {
   console.log(
@@ -43,6 +43,6 @@ app.use(express.json());
 dotenv.config();
 const PORT = process.env.PORT;
 
-app.use("/users", router);
+app.use("/api/v1/", router);
 
 app.listen(PORT, console.log(`server ruuning on port ${PORT}`));

@@ -2,9 +2,24 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import router from "./routes/getUsers.js";
+import {conn} from "./db/dbConn.js"
 const app = express();
 
 // cutsome middieware
+conn();
+
+if(conn() === true){
+  console.log("connection established ")
+}
+else{
+  console.log("an error occured while connecting to the databse",conn())
+  process.exit(0)
+}
+
+if(conn ==  false){
+  pr
+}
+
 function time(req, res, next) {
   console.log(
     `request day and time:  ${new Date().toDateString()} ${new Date().toLocaleTimeString()}`,

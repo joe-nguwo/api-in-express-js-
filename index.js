@@ -10,7 +10,7 @@ const app = express();
 
 if(conn()){
   console.log("connection established ")
-  Customers.sync()
+await  Customers.sync({ alter: true });
 
 }
 else{

@@ -5,19 +5,31 @@ import router from "./routes/getUsers.js";
 import {conn} from "./db/dbConn.js"
 import { Customers } from "./models/customers.js";
 const app = express();
+dotenv.config();
+const PORT = 3000;
 
 // cutsome middieware
 
-if(conn()){
-  console.log("connection established ")
-await  Customers.sync({ alter: true });
+async function startServer(){
+
+  try{
+
+    await conn();
+    console.log("connection established");
+
+    await Customers.sync({ alter:true });
+    console.log("table synced");
+
+    app.listen(PORT, () => {
+      console.log(`server running on port ${PORT}`);
+    });
+
+  }
+  catch(error){
+    console.log("database connection failed", error);
+  }
 
 }
-else{
-  console.log("an error occured while connecting to the databse",conn())
-  process.exit(0)
-}
-
 
 
 function time(req, res, next) {
@@ -41,8 +53,8 @@ app.use(time);
 app.use(express.json());
 
 dotenv.config();
-const PORT = process.env.PORT;
+
 
 app.use("/api/v1/", router);
 
-app.listen(PORT, console.log(`server ruuning on port ${PORT}`));
+startServer();

@@ -41,4 +41,4 @@ Follow these steps to run the API locally.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/express-api.git
+git clonehttps://github.com/joe-nguwo/api-in-express-js-.git

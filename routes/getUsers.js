@@ -5,7 +5,7 @@ const router = express.Router()
 
 router.get("/users",async (req,res)=>{
     try {
-        const users = await Customers.findAll();
+        const users = await Customers.findAll(10);
         res.status(200).json(users);
     } catch (error) {
         console.error("Error fetching users:", error);

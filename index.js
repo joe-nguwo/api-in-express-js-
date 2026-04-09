@@ -1,6 +1,7 @@
 import express from "express";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
+import cors from "cors"
 import router from "./routes/getUsers.js";
 import {conn} from "./db/dbConn.js"
 import { Customers } from "./models/customers.js";
@@ -39,7 +40,7 @@ function time(req, res, next) {
   next();
 }
 const limiter = rateLimit({
-  max: 2,
+  max: 10,
   windowMs: 60 * 1000, // one minute
   handler: (req, res) => {
     res.status(429).json({
@@ -48,6 +49,7 @@ const limiter = rateLimit({
     });
   }
 });
+app.use(cors())
 app.use(limiter)
 app.use(time);
 app.use(express.json());

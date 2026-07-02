@@ -5,10 +5,13 @@ import { Op } from "sequelize";
 const router = express.Router();
 
 router.get("/users", async (req, res) => {
-    const { search } = req.query;
+    const { search,page } = req.query;
+    const limit = 20;
+    const offset = (page - 1 )* limit 
 
     try {
         let users;
+        let  total_users;
 
         if (search) {
             users = await Customers.findAll({
@@ -20,13 +23,26 @@ router.get("/users", async (req, res) => {
             });
         } else {
             users = await Customers.findAll({
-                limit: 20
+                limit: limit,
+                offset:offset,
             });
+
+            total_users = await Customers.count()
+
+
         }
 
         res.status(200).json({
             message: "ok",
-            data: users
+            data: [
+                users
+            ],
+            pagination:{
+                page:page,
+                limit:limit,
+                total_records:total_users
+
+            }
         });
 
     } catch (error) {

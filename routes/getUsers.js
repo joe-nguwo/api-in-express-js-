@@ -52,7 +52,7 @@ router.get("/users", async (req, res) => {
         });
     }
 });
-router.get("/users/id/:id", async(req,res)=>{
+router.delete("/users/:id", async(req,res)=>{
     const id = req.query.id
     try {
 

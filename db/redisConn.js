@@ -1,27 +1,15 @@
 import { createClient } from "redis";
 
-   const client = createClient({
-    url: "redis://localhost:6379"
-});
+let redisConnect = null
 
-async function  redisConnect(){
-
-    try {
-          const conn =  await client.connect();
-          console.log("connection succefully",conn)
-        
-    } catch (error) {
-        console.log("error while connecting",error)
-        
-    }
- 
-
+try {
+    redisConnect = createClient({
+    url: "redis://localhost:6379",
+  });
+  await redisConnect.connect()
+  console.log("redis connection established")
+} catch (error) {
+  console.log(`an error occured while connecting ${error}`);
 }
 
-export default redisConnect
-
-
-
-  
-    
-
+export default redisConnect;

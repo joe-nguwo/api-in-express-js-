@@ -1,5 +1,6 @@
 import { Customers } from "../models/customers.js";
 import { Op } from "sequelize";
+import redisConnect from "../db/redisConn.js";
 
 const getUsers = async (req, res) => {
     const { search,page } = req.query;
@@ -9,6 +10,7 @@ const getUsers = async (req, res) => {
     try {
         let users;
         let  total_users;
+       
 
         if (search) {
             users = await Customers.findAll({

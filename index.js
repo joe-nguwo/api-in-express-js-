@@ -2,17 +2,12 @@ import express from "express";
 import rateLimit from "express-rate-limit";
 import dotenv from "dotenv";
 import cors from "cors"
-import redisConnect from "./db/redisConn.js";
 import router from "./routes/getUsers.js";
 import {conn} from "./db/dbConn.js"
 import { Customers } from "./models/customers.js";
 const app = express();
 dotenv.config();
 const PORT = 3000;
-
-// cutsome middieware
-
-redisConnect()
 
 async function startServer(){
 

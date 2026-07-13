@@ -2,14 +2,17 @@ import { Customers } from "../models/customers.js";
 import { Op } from "sequelize";
 import redisConnect from "../db/redisConn.js";
 
+
 const getUsers = async (req, res) => {
     const { search,page } = req.query;
     const limit = 20;
     const offset = (page - 1 )* limit 
+    const CachKey = `users${page}`
 
     try {
         let users;
         let  total_users;
+        const CachedData = await redisConnect.get(CachKey)
        
 
         if (search) {
@@ -20,18 +23,25 @@ const getUsers = async (req, res) => {
                     }
                 }
             });
-        } else {
+            res.status(200).json({"data":users})
+        }
+        else if(CachedData){
+            console.log("Cache hit");
+            res.status(200).json(JSON.parse(CachedData))
+
+        }
+        
+        else {
+            console.log("Cache miss")
             users = await Customers.findAll({
                 limit: limit,
                 offset:offset,
             });
+            await redisConnect.setEx(CachKey,3600,JSON.stringify(users))
+            
 
             total_users = await Customers.count()
-
-
-        }
-
-        res.status(200).json({
+            res.status(200).json({
             message: "ok",
             data: [
                 users
@@ -44,6 +54,10 @@ const getUsers = async (req, res) => {
             }
         });
 
+
+        }
+
+        
     } catch (error) {
         console.error(error);
         res.status(500).json({

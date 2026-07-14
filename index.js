@@ -33,7 +33,7 @@ async function startServer(){
 
 function time(req, res, next) {
   console.log(
-    `request day and time:  ${new Date().toDateString()} ${new Date().toLocaleTimeString()}`,
+    `request day and time:  ${new Date().toDateString()} ${new Date().toLocaleTimeString()} ${req.originalUrl}`,
   );
   next();
 }
